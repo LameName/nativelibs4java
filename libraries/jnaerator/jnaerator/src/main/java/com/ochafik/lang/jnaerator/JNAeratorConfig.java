@@ -64,7 +64,7 @@ public class JNAeratorConfig {
     // more shared library.
     // public List<Pair<Expression, String>> dependencies = new
     // ArrayList<Pair<Expression,String>>();
-    public List<Pair<Expression, String>> dependencies;
+    public List<Pair<Expression, String>> dependencies = null;
 
     public enum Compiler {
 

@@ -873,7 +873,7 @@ public class BridJDeclarationsConverter extends DeclarationsConverter {
         if (implementations instanceof ModifiableElement) {
             ModifiableElement minterf = (ModifiableElement) implementations;
 
-            if (dependencies == null && dependencies.size() == 0) {
+            if (dependencies == null || dependencies.isEmpty()) {
                 minterf.addAnnotation(new Annotation(org.bridj.ann.Library.class, expr(library)));
             }
             else {
@@ -901,11 +901,13 @@ public class BridJDeclarationsConverter extends DeclarationsConverter {
             if (library == null) {
                 continue; // to handle code defined in macro-expanded expressions
             }
-
+            
             Identifier javaPackage = result.javaPackageByLibrary.get(library);
             Identifier implementationsSimpleClassName = result.getLibraryClassSimpleName(library);
             Identifier declarationsSimpleClassName = result.getLibraryDeclarationsClassSimpleName(library);
-
+            
+            List<Pair<Expression, String>> dependencies = config.dependencies;
+            
             Identifier implementationsFullClassName = result.getLibraryClassFullName(library);//ident(javaPackage, libraryClassName);
             Identifier declarationsFullClassName = result.getLibraryDeclarationsClassFullName(library);
             //if (!result.objCClasses.isEmpty())
@@ -950,7 +952,7 @@ public class BridJDeclarationsConverter extends DeclarationsConverter {
 //            constr.setBody(block(stat(methodCall("super", classLiteral(typeRef(fullLibraryClassName.clone()))))));
 //            interf.addDeclaration(constr);
 
-            fillLibraryMapping(result, sourceFiles, declarations, implementations, library, config.dependencies, javaPackage, varRef("this"));
+            fillLibraryMapping(result, sourceFiles, declarations, implementations, library, dependencies, javaPackage, varRef("this"));
             writeLibraryInterface(result, sourceFiles, declarations, library, javaPackage);
             if (declarations != implementations) {
                 writeLibraryInterface(result, sourceFiles, implementations, library, javaPackage);
