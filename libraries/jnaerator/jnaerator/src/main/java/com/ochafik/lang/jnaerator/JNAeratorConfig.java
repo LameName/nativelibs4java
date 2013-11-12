@@ -38,6 +38,7 @@ import org.bridj.ann.Array;
 import com.ochafik.lang.jnaerator.JNAeratorConfigUtils.FileExtensionFilter;
 import com.ochafik.lang.jnaerator.parser.Element;
 import com.ochafik.lang.jnaerator.parser.ElementsHelper;
+import com.ochafik.lang.jnaerator.parser.Expression;
 import com.ochafik.lang.jnaerator.parser.Function;
 import com.ochafik.lang.jnaerator.parser.Identifier;
 import com.ochafik.lang.jnaerator.parser.TypeRef;
@@ -59,8 +60,12 @@ import java.util.Collections;
 import java.util.regex.Pattern;
 
 public class JNAeratorConfig {
+    // It is only necessary to create a instance, if it really depends on one or
+    // more shared library.
+    // public List<Pair<Expression, String>> dependencies = new
+    // ArrayList<Pair<Expression,String>>();
+    public List<Pair<Expression, String>> dependencies;
 
-	public String dependencies;
     public enum Compiler {
 
         GCC4, MSVC9
@@ -503,8 +508,8 @@ public class JNAeratorConfig {
     }
 
     public JNAeratorConfig() {
-//		if (System.getenv("POINTER_CLASSES") == null)
-//			features.remove(GenFeatures.TypedPointersForForwardDeclarations);
+//              if (System.getenv("POINTER_CLASSES") == null)
+//                      features.remove(GenFeatures.TypedPointersForForwardDeclarations);
     }
     public boolean verbose;
     boolean parseInChunks;
@@ -528,14 +533,14 @@ public class JNAeratorConfig {
                     libraryName = libraryByDirectory.get(file.getParentFile());
                 }
                 //if (value.toString().startsWith("\""))
-                //	new Exception("Double quotes in file !").printStackTrace();
-//				if (!canoFile.contains("Program Files")) {
-//					System.out.println("libraryByFile = " + libraryByFile);
-//					System.out.println("libraryByFile(" + canoFile + ") = " + libraryFile);
-//					System.out.println("    value = " + value);
-//					System.out.println("can value = " + value.getCanonicalFile());
-//					System.out.println("abs value = " + value.getAbsoluteFile());
-//				}
+                //      new Exception("Double quotes in file !").printStackTrace();
+//                              if (!canoFile.contains("Program Files")) {
+//                                      System.out.println("libraryByFile = " + libraryByFile);
+//                                      System.out.println("libraryByFile(" + canoFile + ") = " + libraryFile);
+//                                      System.out.println("    value = " + value);
+//                                      System.out.println("can value = " + value.getCanonicalFile());
+//                                      System.out.println("abs value = " + value.getAbsoluteFile());
+//                              }
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -632,11 +637,11 @@ public class JNAeratorConfig {
 
     public Collection<File> getFiles() {
         /*return new AdaptedCollection<String, File>(libraryByFile.keySet(), new Adapter<String, File>() {
-         @Override
-         public File adapt(String value) {
-         return new File(value);
-         }
-         });*/
+          @Override
+          public File adapt(String value) {
+          return new File(value);
+          }
+          });*/
         return sourceFiles;//libraryByFile.keySet();
     }
 

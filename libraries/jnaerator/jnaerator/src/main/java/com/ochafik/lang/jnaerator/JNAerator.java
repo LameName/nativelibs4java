@@ -61,6 +61,7 @@ import com.ochafik.lang.jnaerator.JNAeratorConfig.OutputMode;
 import com.ochafik.lang.jnaerator.parser.Arg;
 import com.ochafik.lang.jnaerator.parser.Define;
 import com.ochafik.lang.jnaerator.parser.Element;
+import com.ochafik.lang.jnaerator.parser.Expression;
 import com.ochafik.lang.jnaerator.parser.Function;
 import com.ochafik.lang.jnaerator.parser.ModifiableElement;
 import com.ochafik.lang.jnaerator.parser.Modifier;
@@ -84,6 +85,7 @@ import java.text.MessageFormat;
 import java.util.logging.Logger;
 import org.antlr.runtime.ANTLRReaderStream;
 import org.antlr.runtime.CommonTokenStream;
+import static com.ochafik.lang.jnaerator.parser.ElementsHelper.*;
 import com.ochafik.lang.jnaerator.parser.Function.SignatureType;
 import java.io.*;
 /*
@@ -227,7 +229,8 @@ public class JNAerator {
                 File libraryFileForCurrentArch = null;
                 String currentLibrary = null, currentExtractedInterface = null;
 
-                @Override
+                @SuppressWarnings("unchecked")
+				@Override
                 List<String> parsed(ParsedArg a) throws Exception {
                     switch (a.def) {
 
@@ -329,8 +332,19 @@ public class JNAerator {
                                 config.extractedLibraries.put(currentLibrary, currentExtractedInterface);
                             break;
                         case Dependencies:
-							config.dependencies = a.getStringParam(0);
-							break;
+                            config.dependencies = new ArrayList<Pair<Expression,String>>();
+                            String tmpStr = a.getStringParam(0);
+                            String[] tmpStrArray = tmpStr.split(",");
+                            for(String addString : tmpStrArray) {
+                                if (addString.equals(",")) {
+                                    continue;
+                                }
+                                else
+                                {
+                                    config.dependencies.add( new Pair<Expression, String>(expr(addString), ","));
+                                }
+                            }
+                            break;
                         case ExtractDeclarations:
                             currentExtractedInterface = a.getStringParam(0);
                             if (currentLibrary != null)

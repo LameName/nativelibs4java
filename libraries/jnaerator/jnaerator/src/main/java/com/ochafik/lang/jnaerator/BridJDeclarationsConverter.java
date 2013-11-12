@@ -867,20 +867,30 @@ public class BridJDeclarationsConverter extends DeclarationsConverter {
 
     @Override
     protected void fillLibraryMapping(Result result, SourceFiles sourceFiles, DeclarationsHolder declarations, DeclarationsHolder implementations, 
-    String library, String dependency, Identifier javaPackage, Expression nativeLibFieldExpr) throws IOException {
-        super.fillLibraryMapping(result, sourceFiles, declarations, implementations, library, dependency, javaPackage, nativeLibFieldExpr);
+    String library, List<Pair<Expression, String>> dependencies, Identifier javaPackage, Expression nativeLibFieldExpr) throws IOException {
+        super.fillLibraryMapping(result, sourceFiles, declarations, implementations, library, dependencies, javaPackage, nativeLibFieldExpr);
 
         if (implementations instanceof ModifiableElement) {
             ModifiableElement minterf = (ModifiableElement) implementations;
-            if (dependency == null) {
-				minterf.addAnnotation(new Annotation(org.bridj.ann.Library.class, expr(library)));
-			}
-			else {
-				/**
-				 * TODO: It is just a hack. Maybe, it is possible to beautify it.
-				 * */
-				minterf.addAnnotation(new Annotation(org.bridj.ann.Library.class, "(value = "+expr(library)+", dependencies = {"+expr(dependency)+"})"));
-			}
+
+            if (dependencies == null && dependencies.size() == 0) {
+                minterf.addAnnotation(new Annotation(org.bridj.ann.Library.class, expr(library)));
+            }
+            else {
+                /**
+                 * TODO: It is just a hack. Maybe, it is possible to beautify it.
+                 * */
+                StringBuilder tmpStr = new StringBuilder();
+                int idx = 0;
+                for (Pair<Expression, String> tmp : dependencies) {
+                    tmpStr.append(tmp.getFirst().toString());
+                    if (idx<dependencies.size()-1)
+                        tmpStr.append(tmp.getSecond());
+                    idx++;
+
+                }
+                minterf.addAnnotation(new Annotation(org.bridj.ann.Library.class, "(value = "+expr(library)+", dependencies = {"+tmpStr+"})"));
+            }
             minterf.addAnnotation(new Annotation(org.bridj.ann.Runtime.class, classLiteral(result.hasCPlusPlus ? CPPRuntime.class : CRuntime.class)));
         }
     }
