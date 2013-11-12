@@ -328,6 +328,9 @@ public class JNAerator {
                             if (currentExtractedInterface != null)
                                 config.extractedLibraries.put(currentLibrary, currentExtractedInterface);
                             break;
+                        case Dependencies:
+							config.dependencies = a.getStringParam(0);
+							break;
                         case ExtractDeclarations:
                             currentExtractedInterface = a.getStringParam(0);
                             if (currentLibrary != null)

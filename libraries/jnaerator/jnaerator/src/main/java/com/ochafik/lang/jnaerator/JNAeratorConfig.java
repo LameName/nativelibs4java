@@ -60,6 +60,7 @@ import java.util.regex.Pattern;
 
 public class JNAeratorConfig {
 
+	public String dependencies;
     public enum Compiler {
 
         GCC4, MSVC9
