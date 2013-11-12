@@ -433,7 +433,7 @@ public class NodeJSDeclarationsConverter extends DeclarationsConverter {
             dummyNodeBufferFreeCallback.setBody(new Block());
             sourceFile.addDeclaration(dummyNodeBufferFreeCallback);
 
-            fillLibraryMapping(result, sourceFiles, sourceFile, sourceFile, library, null, null);
+            fillLibraryMapping(result, sourceFiles, sourceFile, sourceFile, library,null, null, null);
             initMethod.replaceBy(null);
             sourceFile.addDeclaration(initMethod);
             sourceFile.addDeclaration(decl(stat(methodCall("NODE_MODULE", varRef(ident(library)), varRef(ident(initFunctionName))))));

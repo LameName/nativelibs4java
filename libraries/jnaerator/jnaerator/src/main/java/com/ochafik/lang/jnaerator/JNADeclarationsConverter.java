@@ -1140,7 +1140,7 @@ public class JNADeclarationsConverter extends DeclarationsConverter {
                 interf.setType(Struct.Type.JavaInterface);
             }
 
-            fillLibraryMapping(result, sourceFiles, interf, interf, library, javaPackage, nativeLibFieldExpr);
+            fillLibraryMapping(result, sourceFiles, interf, interf, library, null, javaPackage, nativeLibFieldExpr);
             writeLibraryInterface(result, sourceFiles, interf, library, javaPackage);
         }
         if (hubOut != null) {

@@ -866,12 +866,21 @@ public class BridJDeclarationsConverter extends DeclarationsConverter {
     }
 
     @Override
-    protected void fillLibraryMapping(Result result, SourceFiles sourceFiles, DeclarationsHolder declarations, DeclarationsHolder implementations, String library, Identifier javaPackage, Expression nativeLibFieldExpr) throws IOException {
-        super.fillLibraryMapping(result, sourceFiles, declarations, implementations, library, javaPackage, nativeLibFieldExpr);
+    protected void fillLibraryMapping(Result result, SourceFiles sourceFiles, DeclarationsHolder declarations, DeclarationsHolder implementations, 
+    String library, String dependency, Identifier javaPackage, Expression nativeLibFieldExpr) throws IOException {
+        super.fillLibraryMapping(result, sourceFiles, declarations, implementations, library, dependency, javaPackage, nativeLibFieldExpr);
 
         if (implementations instanceof ModifiableElement) {
             ModifiableElement minterf = (ModifiableElement) implementations;
-            minterf.addAnnotation(new Annotation(org.bridj.ann.Library.class, expr(library)));
+            if (dependency == null) {
+				minterf.addAnnotation(new Annotation(org.bridj.ann.Library.class, expr(library)));
+			}
+			else {
+				/**
+				 * TODO: It is just a hack. Maybe, it is possible to beautify it.
+				 * */
+				minterf.addAnnotation(new Annotation(org.bridj.ann.Library.class, "(value = "+expr(library)+", dependencies = {"+expr(dependency)+"})"));
+			}
             minterf.addAnnotation(new Annotation(org.bridj.ann.Runtime.class, classLiteral(result.hasCPlusPlus ? CPPRuntime.class : CRuntime.class)));
         }
     }
@@ -931,7 +940,7 @@ public class BridJDeclarationsConverter extends DeclarationsConverter {
 //            constr.setBody(block(stat(methodCall("super", classLiteral(typeRef(fullLibraryClassName.clone()))))));
 //            interf.addDeclaration(constr);
 
-            fillLibraryMapping(result, sourceFiles, declarations, implementations, library, javaPackage, varRef("this"));
+            fillLibraryMapping(result, sourceFiles, declarations, implementations, library, config.dependencies, javaPackage, varRef("this"));
             writeLibraryInterface(result, sourceFiles, declarations, library, javaPackage);
             if (declarations != implementations) {
                 writeLibraryInterface(result, sourceFiles, implementations, library, javaPackage);
