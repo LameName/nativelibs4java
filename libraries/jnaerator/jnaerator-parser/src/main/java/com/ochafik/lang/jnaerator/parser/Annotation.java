@@ -37,10 +37,6 @@ public class Annotation extends Element {
 	public Annotation(Class<? extends java.lang.annotation.Annotation> annotationClass, Expression... arguments) {
 		this(typeRef(annotationClass), arguments);
 	}
-	public Annotation(Class<? extends java.lang.annotation.Annotation> annotationClass, String argument) {
-		setAnnotationClass(typeRef(annotationClass));
-		setArgument(argument);
-	}
 	public Annotation(TypeRef annotationClass, Expression... arguments) {
 		setAnnotationClass(annotationClass);
 		setArguments(Arrays.asList(arguments));
