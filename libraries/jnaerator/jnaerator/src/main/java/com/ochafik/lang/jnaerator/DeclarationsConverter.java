@@ -884,7 +884,7 @@ public abstract class DeclarationsConverter {
     public abstract void generateLibraryFiles(SourceFiles sourceFiles, Result result, JNAeratorConfig config) throws IOException;
 
     protected void fillLibraryMapping(Result result, SourceFiles sourceFiles, DeclarationsHolder declarations, DeclarationsHolder implementations,
-     String library, List<Pair<Expression, String>> dependencies,  Identifier javaPackage, Expression nativeLibFieldExpr) throws IOException {
+     String library, List<Expression> dependencies,  Identifier javaPackage, Expression nativeLibFieldExpr) throws IOException {
 
         Identifier implementationsFullClassName = result.getLibraryClassFullName(library);//ident(javaPackage, libraryClassName);
         Identifier declarationsFullClassName = result.getLibraryDeclarationsClassFullName(library);

@@ -332,7 +332,7 @@ public class JNAerator {
                                 config.extractedLibraries.put(currentLibrary, currentExtractedInterface);
                             break;
                         case Dependencies:
-                            config.dependencies = new ArrayList<Pair<Expression,String>>();
+                            config.dependencies = new ArrayList<Expression>();
                             String tmpStr = a.getStringParam(0);
                             String[] tmpStrArray = tmpStr.split(",");
                             for(String addString : tmpStrArray) {
@@ -341,7 +341,7 @@ public class JNAerator {
                                 }
                                 else
                                 {
-                                    config.dependencies.add( new Pair<Expression, String>(expr(addString), ","));
+                                    config.dependencies.add(expr(addString));
                                 }
                             }
                             break;
